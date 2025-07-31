@@ -1,8 +1,14 @@
+import { BrowserRouter as Router,Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
 function App() {
   return (
-    <div className="text-3xl text-blue-600 font-bold p-10">
-      Shopyy Customer App 🚀
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />}>
+
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
