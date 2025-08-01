@@ -4,7 +4,7 @@ import Products from "./pages/Products";
 import CartPage from "./pages/CartPage";
 function App() {
   return (
-    <Router>
+    <Router basename="/shopyy-customer">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
