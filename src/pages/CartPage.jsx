@@ -8,19 +8,18 @@ function Cart() {
   const navigate = useNavigate();
   const { cartItems, removeFromCart, incrementItem, decrementItem } = useCart();
 
-const handleIncrement = (itemId) => {
-  incrementItem(itemId);
-};
+  const handleIncrement = (itemId) => {
+    incrementItem(itemId);
+  };
 
-const handleDecrement = (itemId) => {
-  const item = cartItems.find((item) => item.id === itemId);
-  if (item.quantity === 1) {
-    removeFromCart(itemId);
-  } else {
-    decrementItem(itemId);
-  }
-};
-
+  const handleDecrement = (itemId) => {
+    const item = cartItems.find((item) => item.id === itemId);
+    if (item.quantity === 1) {
+      removeFromCart(itemId);
+    } else {
+      decrementItem(itemId);
+    }
+  };
 
   const totalAmount = cartItems.reduce(
     (acc, item) => acc + Number(item.price) * item.quantity,
