@@ -116,7 +116,10 @@ function Cart() {
       {cartItems.length > 0 && (<div className="relative px-4 pt-4 pb-24">
         <div className="fixed bottom-0 left-0 w-full bg-white shadow-lg border-t px-4 py-3 flex items-center justify-between">
           <span className="text-lg font-semibold text-gray-800">Total: ₹{totalAmount.toFixed(2)}</span>
-          <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium shadow">
+          <button
+            onClick={() => navigate('/checkout')}
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium shadow"
+          >
             Pay Now
           </button>
         </div>
