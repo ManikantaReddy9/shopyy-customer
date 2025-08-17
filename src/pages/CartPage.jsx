@@ -53,8 +53,6 @@ function Cart() {
             + Add Products to Cart
           </button>
         </div>
-
-        
       ) : (
         <div className="flex flex-col gap-4 bg-white rounded-xl shadow p-3">
           {cartItems.map((item) => (
@@ -98,7 +96,6 @@ function Cart() {
               </div>
             </div>
           ))}
-
           {/* Add More / Total */}
           <div className="flex justify-between items-center pt-1">
             <button

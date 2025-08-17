@@ -1,3 +1,4 @@
+// Products.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ShoppingCart } from 'lucide-react';
@@ -11,7 +12,9 @@ function Products() {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const { addToCart } = useCart();
+  
+  // ✅ get cart also from context
+  const { addToCart, cartItems } = useCart();
 
   useEffect(() => {
     axios
@@ -26,19 +29,15 @@ function Products() {
 
   const categories = ['All', 'Fruits', 'Vegetables', 'Dairy', 'Bakery','NonVeg'];
 
-  // Dummy category logic (since API has only 'groceries', we'll mock categories)
   const categorizeProduct = (title) => {
-  const lower = title.toLowerCase();
-
-  for (const [category, keywords] of Object.entries(categoryMap)) {
-    if (keywords.some((word) => lower.includes(word))) {
-      return category;
+    const lower = title.toLowerCase();
+    for (const [category, keywords] of Object.entries(categoryMap)) {
+      if (keywords.some((word) => lower.includes(word))) {
+        return category;
+      }
     }
-  }
-
-  return 'Others';
-};
-
+    return 'Others';
+  };
 
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -55,9 +54,17 @@ function Products() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-green-100 p-4">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-green-700">🛒 Grocery Products</h2>
-        <button onClick={() => navigate('/cart')}>
+        <h2 className="text-2xl font-bold text-green-700"> Grocery Products</h2>
+        
+        {/* ✅ Cart Icon with Badge */}
+        <button onClick={() => navigate('/cart')} className="relative">
           <ShoppingCart className="text-green-600 hover:text-green-800 transition" size={28} />
+          {cartItems.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              {/* ✅ show total quantity, not just unique items */}
+              {cartItems.length}
+            </span>
+          )}
         </button>
       </div>
 
