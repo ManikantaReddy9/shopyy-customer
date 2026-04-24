@@ -1,33 +1,40 @@
 // Products.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { ShoppingCart } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
-import categoryMap from '../utils/categoryMap';
-import toast from 'react-hot-toast';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+import categoryMap from "../utils/categoryMap";
+import toast from "react-hot-toast";
 
 function Products() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
   // ✅ get cart also from context
   const { addToCart, cartItems } = useCart();
 
   useEffect(() => {
     axios
-      .get('https://dummyjson.com/products/category/groceries')
+      .get("https://dummyjson.com/products/category/groceries")
       .then((res) => {
         setProducts(res.data.products);
       })
       .catch((err) => {
-        console.error('Failed to fetch products:', err);
+        console.error("Failed to fetch products:", err);
       });
   }, []);
 
-  const categories = ['All', 'Fruits', 'Vegetables', 'Dairy', 'Bakery','NonVeg'];
+  const categories = [
+    "All",
+    "Fruits",
+    "Vegetables",
+    "Dairy",
+    "Bakery",
+    "NonVeg",
+  ];
 
   const categorizeProduct = (title) => {
     const lower = title.toLowerCase();
@@ -36,13 +43,16 @@ function Products() {
         return category;
       }
     }
-    return 'Others';
+    return "Others";
   };
 
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = product.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
     const matchesCategory =
-      selectedCategory === 'All' || categorizeProduct(product.title) === selectedCategory;
+      selectedCategory === "All" ||
+      categorizeProduct(product.title) === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -55,10 +65,13 @@ function Products() {
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-green-100 p-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-green-700"> Grocery Products</h2>
-        
+
         {/* ✅ Cart Icon with Badge */}
-        <button onClick={() => navigate('/cart')} className="relative">
-          <ShoppingCart className="text-green-600 hover:text-green-800 transition" size={28} />
+        <button onClick={() => navigate("/cart")} className="relative">
+          <ShoppingCart
+            className="text-green-600 hover:text-green-800 transition"
+            size={28}
+          />
           {cartItems.length > 0 && (
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
               {/* ✅ show total quantity, not just unique items */}
@@ -87,8 +100,8 @@ function Products() {
             onClick={() => setSelectedCategory(cat)}
             className={`px-4 py-2 rounded-lg text-sm font-semibold ${
               selectedCategory === cat
-                ? 'bg-green-600 text-white'
-                : 'bg-white border text-green-700 hover:bg-green-100'
+                ? "bg-green-600 text-white"
+                : "bg-white border text-green-700 hover:bg-green-100"
             }`}
           >
             {cat}
@@ -99,9 +112,18 @@ function Products() {
       {/* Product Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {filteredProducts.map((product, index) => {
-          const bgColors = ['bg-rose-100', 'bg-lime-100', 'bg-orange-100', 'bg-sky-100', 'bg-amber-100'];
+          const bgColors = [
+            "bg-rose-100",
+            "bg-lime-100",
+            "bg-orange-100",
+            "bg-sky-100",
+            "bg-amber-100",
+          ];
           return (
             <div
+              onClick={() =>
+                navigate("/ProductDetails", { state: { product } })
+              }
               key={product.id}
               className={`${bgColors[index % bgColors.length]} border p-2 rounded-xl shadow hover:shadow-md transition flex flex-col justify-between`}
             >
@@ -113,7 +135,10 @@ function Products() {
               <h2 className="text-lg font-semibold mt-2">{product.title}</h2>
               <p className="text-green-600 font-bold">₹{product.price}</p>
               <button
-                onClick={() => handleAddToCart(product)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddToCart(product)
+                }}
                 className="mt-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-2 px-4 rounded-lg transition duration-200"
               >
                 ➕ Add to Cart

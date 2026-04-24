@@ -8,6 +8,7 @@ import Success from "./pages/Success";
 import { useEffect } from "react";
 import { messaging } from "./firebase"; // Firebase config file
 import { getToken, onMessage } from "firebase/messaging";
+import ProductDetails from "./components/ProductDetails";
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
+        <Route path="/productDetails" element={<ProductDetails />}/>
       </Routes>
     </Router>
   );
